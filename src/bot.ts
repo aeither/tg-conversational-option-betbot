@@ -17,27 +17,26 @@ export const bot = new Bot(TELEGRAM_BOT_TOKEN, {
   },
 })
 
+const openai = new OpenAI({
+  apiKey: OPEN_API_KEY,
+})
+
 /**
  * Bot Commands
  */
 bot.command('test', async (ctx) => {
-  const openai = new OpenAI({
-    apiKey: OPEN_API_KEY,
-  })
   const messages: ChatCompletionMessageParam[] = [
     {
       role: 'system',
       content:
-        'Please use our book database, which you can access using functions to answer the following questions.',
+        'You are a trading agent, you are going to help the user do onchain actions with the functions',
     },
     {
       role: 'user',
-      content: 'I want the title of the book of ID a3',
+      content: 'I want to buy 10 apples', // ctx.message?.text
       // 'I really enjoyed reading To Kill a Mockingbird, could you recommend me a book that is similar and tell me why?',
     },
   ]
-  console.log(messages[0]) // system
-  console.log(messages[1]) // user
 
   const completion = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
@@ -55,10 +54,11 @@ bot.command('test', async (ctx) => {
     name: message.function_call.name!,
     content: JSON.stringify(result),
   }
-  messages.push(newMessage)
+
+  // Save it to cache for context in following messages
+  // messages.push(newMessage)
 
   console.log(newMessage)
-
   ctx.reply('Welcome! Up and running.')
 })
 

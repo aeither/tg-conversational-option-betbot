@@ -37,6 +37,30 @@ export interface FunctionCallMessage {
 
 export const chatGPTFunctions: FunctionDefinition[] = [
   {
+    name: 'buy',
+    description:
+      'user wants to buy. get the quantity and item from input. Default order_type to MARKET.',
+    parameters: {
+      type: 'object',
+      properties: {
+        side: {
+          type: 'string',
+          enum: ['SELL', 'BUY'],
+        },
+        order_type: {
+          type: 'string',
+          enum: ['LIMIT', 'MARKET', 'IOC', 'FOK', 'POST_ONLY', 'ASK', 'BID'],
+        },
+        quantity: {
+          type: 'string',
+        },
+        symbol: {
+          type: 'string',
+        },
+      },
+    },
+  },
+  {
     name: 'list',
     description: 'list queries books by genre, and returns a list of names of books',
     parameters: {
@@ -78,6 +102,9 @@ export async function callFunction(
 ): Promise<any> {
   const args = JSON.parse(function_call.arguments!)
   switch (function_call.name) {
+    case 'buy':
+      return await buy(args['side'], args['quantity'], args['symbol'])
+
     case 'list':
       return await list(args['genre'])
 
@@ -89,6 +116,14 @@ export async function callFunction(
 
     default:
       throw new Error('No function found')
+  }
+}
+
+async function buy(side: string, quantity: string, symbol: string) {
+  return {
+    success: true,
+    timestamp: Date.now(),
+    data: { message: `you successfully ${side} ${quantity} of ${symbol}` },
   }
 }
 
