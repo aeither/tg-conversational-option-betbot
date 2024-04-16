@@ -1,7 +1,7 @@
 import { ChatCompletionMessageParam } from 'https://deno.land/x/openai@v4.33.0/resources/chat/mod.ts'
 import { FunctionCallMessage, callFunction, chatGPTFunctions } from '../lib/chatgpt.ts'
 import { OPEN_API_KEY, TELEGRAM_BOT_TOKEN } from '../lib/constants.ts'
-import { Bot, OpenAI } from './deps.ts'
+import { Bot, Keyboard, OpenAI } from './deps.ts'
 
 /**
  * Bot Definition
@@ -21,9 +21,21 @@ const openai = new OpenAI({
   apiKey: OPEN_API_KEY,
 })
 
+const WEBAPP_URL =
+  Deno.env.get('NODE_ENV') === 'development'
+    ? 'https://ba0a-2409-8928-a224-be6-387b-1896-7806-5dc9.ngrok-free.app'
+    : 'https://PRODUCTIONAPPURL.vercel.app'
+console.log('WEBAPP_URL using: ', WEBAPP_URL)
+
+const keyboard = new Keyboard()
+keyboard.webApp('Web App', WEBAPP_URL)
+
 /**
  * Bot Commands
  */
+
+bot.command('app', (ctx) => ctx.reply('Use app!!!', { reply_markup: keyboard }))
+
 bot.command('test', async (ctx) => {
   const messages: ChatCompletionMessageParam[] = [
     {
@@ -72,6 +84,7 @@ bot.command('latency', async (ctx) => {
 
   ctx.reply('Welcome! Up and running.')
 })
+
 bot.command('start', (ctx) => ctx.reply('Welcome! Up and running.'))
 
 bot.command('ping', (ctx) => ctx.reply(`Pong! ${new Date()} ${Date.now()}`))

@@ -34,6 +34,8 @@ deno task start:bot
 ngrok http 8000
 ```
 
+Update PROJECT_URL in `scripts/index.ts` and run `deno task commands`
+
 # Deployment
 
 Publish repository to Github. Connect the repo to Deno deploy.
