@@ -62,6 +62,16 @@ bot.command('test', async (ctx) => {
   ctx.reply('Welcome! Up and running.')
 })
 
+bot.command('latency', async (ctx) => {
+  await ctx.replyWithChatAction('typing')
+
+  function callback(...args: any[]): void {
+    console.log('hello')
+  }
+  await setTimeout(callback, 5000)
+
+  ctx.reply('Welcome! Up and running.')
+})
 bot.command('start', (ctx) => ctx.reply('Welcome! Up and running.'))
 
 bot.command('ping', (ctx) => ctx.reply(`Pong! ${new Date()} ${Date.now()}`))
