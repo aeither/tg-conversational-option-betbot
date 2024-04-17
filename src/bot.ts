@@ -1,7 +1,7 @@
 import { ChatCompletionMessageParam } from 'https://deno.land/x/openai@v4.33.0/resources/chat/mod.ts'
 import { FunctionCallMessage, callFunction, chatGPTFunctions } from '../lib/chatgpt.ts'
 import { OPEN_API_KEY, TELEGRAM_BOT_TOKEN } from '../lib/constants.ts'
-import { Bot, Keyboard, OpenAI } from './deps.ts'
+import { Bot, InlineKeyboard, Keyboard, OpenAI } from './deps.ts'
 
 /**
  * Bot Definition
@@ -30,11 +30,13 @@ console.log('WEBAPP_URL using: ', WEBAPP_URL)
 const keyboard = new Keyboard()
 keyboard.webApp('Web App', WEBAPP_URL)
 
+const inlineKeyboard = new InlineKeyboard().webApp('Simple App', WEBAPP_URL)
+
 /**
  * Bot Commands
  */
 
-bot.command('app', (ctx) => ctx.reply('Use app!!!', { reply_markup: keyboard }))
+bot.command('app', (ctx) => ctx.reply('Use app!!!', { reply_markup: inlineKeyboard }))
 
 bot.command('test', async (ctx) => {
   const messages: ChatCompletionMessageParam[] = [
