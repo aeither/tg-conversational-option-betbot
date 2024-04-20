@@ -30,11 +30,34 @@ console.log('WEBAPP_URL using: ', WEBAPP_URL)
 const keyboard = new Keyboard()
 keyboard.webApp('Web App', WEBAPP_URL)
 
+const placeholderKeyboard = new Keyboard().text('Yes').row().text('No')
+// .placeholder('Decide now!')
+
 const inlineKeyboard = new InlineKeyboard().webApp('Simple App', WEBAPP_URL)
 
 /**
  * Bot Commands
  */
+
+bot.command('bet', (ctx) => {
+  ctx.reply('starting...').then((textMessage) => {
+    setTimeout(() => {
+      ctx.api.editMessageText(ctx.chat.id, textMessage.message_id, 'msg1')
+    }, 2000)
+
+    setTimeout(() => {
+      ctx.api.editMessageText(ctx.chat.id, textMessage.message_id, 'msg2')
+    }, 5000)
+
+    setTimeout(() => {
+      ctx.api.editMessageText(ctx.chat.id, textMessage.message_id, 'msg3')
+    }, 10000)
+
+    setTimeout(() => {
+      ctx.api.editMessageText(ctx.chat.id, textMessage.message_id, 'msg4')
+    }, 15000)
+  })
+})
 
 bot.command('app', (ctx) => ctx.reply('Use app!!!', { reply_markup: inlineKeyboard }))
 

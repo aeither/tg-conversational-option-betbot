@@ -13,3 +13,19 @@ https://api.telegram.org/bot<YOUR_BOT_TOKEN>/sendMessage?chat_id=<USER_CHAT_ID>&
 ## Pending to Template
 
 Return the user message back `ctx.message.text`
+
+## Test infos
+
+symbol `PERP_ETH_USDC`
+
+market trades
+https://orderly.network/docs/build-on-evm/evm-api/restful-api/public/get-market-trades
+
+trading pair info
+https://orderly.network/docs/build-on-evm/evm-api/restful-api/public/get-futures-info-for-one-market
+
+funding rates
+https://orderly.network/docs/build-on-evm/evm-api/restful-api/public/get-predicted-funding-rate-for-one-market
+
+leaderboard
+https://orderly.network/docs/build-on-evm/evm-api/restful-api/public/get-points-leaderboard
