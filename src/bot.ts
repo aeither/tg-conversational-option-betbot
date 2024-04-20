@@ -4,6 +4,28 @@ import { OPEN_API_KEY, TELEGRAM_BOT_TOKEN } from '../lib/constants.ts'
 import { Bot, InlineKeyboard, Keyboard, OpenAI } from './deps.ts'
 
 /**
+ * Types
+ */
+
+interface TradeData {
+  symbol: string
+  side: 'BUY' | 'SELL'
+  executed_price: number
+  executed_quantity: number
+  executed_timestamp: number
+}
+
+interface ResponseData {
+  rows: TradeData[]
+}
+
+interface MarketTradesResponse {
+  success: boolean
+  data: ResponseData
+  timestamp: number
+}
+
+/**
  * Bot Definition
  */
 
@@ -40,9 +62,26 @@ const inlineKeyboard = new InlineKeyboard().webApp('Simple App', WEBAPP_URL)
  */
 
 bot.command('bet', (ctx) => {
+  const fetchMarketTrades = async () => {
+    try {
+      const options = { method: 'GET' }
+      const response = await fetch(
+        'https://api-evm.orderly.network/v1/public/market_trades?symbol=PERP_ETH_USDC',
+        options,
+      )
+      const data: MarketTradesResponse = await response.json()
+      const trades = data.data.rows[0].executed_price.toString()
+      return trades
+    } catch (err) {
+      console.error(err)
+      return ''
+    }
+  }
+
   ctx.reply('starting...').then((textMessage) => {
-    setTimeout(() => {
-      ctx.api.editMessageText(ctx.chat.id, textMessage.message_id, 'msg1')
+    setTimeout(async () => {
+      const trades = await fetchMarketTrades()
+      ctx.api.editMessageText(ctx.chat.id, textMessage.message_id, `msg1 ${trades}`)
     }, 2000)
 
     setTimeout(() => {
