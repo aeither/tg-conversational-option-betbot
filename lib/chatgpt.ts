@@ -39,7 +39,7 @@ export const chatGPTFunctions: FunctionDefinition[] = [
   {
     name: 'buy',
     description:
-      'user wants to buy. get the quantity and item from input. Default order_type to MARKET.',
+      'user wants to buy or sell. get the side from user input. Default order_type to MARKET, quantity to 1, and symbol to ETH',
     parameters: {
       type: 'object',
       properties: {

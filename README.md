@@ -1,8 +1,21 @@
-# Telegram Bot
+# TG Options Game
 
-Deno Deploy + Grammyjs
+# Overview
 
-# Setup
+# Demo
+
+# Features
+
+- bet on price going up or down
+- live update
+
+# Techstack
+
+- deno
+- orderly
+- grammyjs
+
+## Setup
 
 ```bash
 brew install deno
@@ -14,7 +27,7 @@ cp .env.example .env
 
 Go to Telegram Bot Father and create a new bot to get the env Token.
 
-# Run
+## Run
 
 with tasks `deno task task-name [additional args]`
 
@@ -24,7 +37,7 @@ with tasks `deno task task-name [additional args]`
 deno task dev:reload
 ```
 
-# Run Webhook locally
+## Run Webhook locally
 
 ```bash
 deno task start:bot
@@ -36,7 +49,7 @@ ngrok http 8000
 
 Update PROJECT_URL in `scripts/index.ts` and run `deno task commands`
 
-# Deployment
+## Deployment
 
 Publish repository to Github. Connect the repo to Deno deploy.
 
@@ -51,10 +64,14 @@ Make sure to not add `/` at the and of url.
 deno task commands
 ```
 
-# Add environment variables
+## Add environment variables
 
 ```bash
 cp .env.example .env.local
 ```
 
 and then go to `lib/constants.ts`
+
+## WIP
+
+- conversational betting

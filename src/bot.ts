@@ -72,7 +72,7 @@ const fetchMarketTrades = async (): Promise<{
 }
 
 const updateMessage = async (
-  ctx: CommandContext<Context> | HearsContext<Context>,
+  ctx: CommandContext<Context> | HearsContext<Context> | any,
   textMessage: Message.TextMessage,
   side = 1,
 ) => {
@@ -179,44 +179,6 @@ bot.command('bet', (ctx) => {
 
 bot.command('app', (ctx) => ctx.reply('Use app!!!', { reply_markup: inlineKeyboard }))
 
-bot.command('test', async (ctx) => {
-  const messages: ChatCompletionMessageParam[] = [
-    {
-      role: 'system',
-      content:
-        'You are a trading agent, you are going to help the user do onchain actions with the functions',
-    },
-    {
-      role: 'user',
-      content: 'I want to buy 10 apples', // ctx.message?.text
-      // 'I really enjoyed reading To Kill a Mockingbird, could you recommend me a book that is similar and tell me why?',
-    },
-  ]
-
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
-    messages,
-    functions: chatGPTFunctions,
-  })
-
-  const message = completion.choices[0]!.message as FunctionCallMessage
-  messages.push(message)
-
-  // If there is a function call, we generate a new message with the role 'function'.
-  const result = await callFunction(message.function_call)
-  const newMessage = {
-    role: 'function' as const,
-    name: message.function_call.name!,
-    content: JSON.stringify(result),
-  }
-
-  // Save it to cache for context in following messages
-  // messages.push(newMessage)
-
-  console.log(newMessage)
-  ctx.reply('Welcome! Up and running.')
-})
-
 bot.command('latency', async (ctx) => {
   await ctx.replyWithChatAction('typing')
 
@@ -227,8 +189,6 @@ bot.command('latency', async (ctx) => {
 
   ctx.reply('Welcome! Up and running.')
 })
-
-bot.command('start', (ctx) => ctx.reply('Welcome! Up and running.'))
 
 bot.command('ping', (ctx) => ctx.reply(`Pong! ${new Date()} ${Date.now()}`))
 
@@ -257,8 +217,53 @@ bot.hears(MENU_BUTTON_SELL, async (ctx) => {
  * Other Messages
  */
 
-bot.on('message', (ctx) => {
+bot.on('message', async (ctx) => {
+  // Get chat id
   const chatId = ctx.message.chat.id
   console.log(`Message received from chat ID: ${chatId}`)
-  ctx.reply('Got another message!')
+
+  // messages
+  const messages: ChatCompletionMessageParam[] = [
+    {
+      role: 'system',
+      content:
+        'You are a trading agent, you are going to help the user do onchain actions with the functions',
+    },
+    {
+      role: 'user',
+      content: ctx.message.text || 'I want to buy', // ctx.message?.text
+    },
+  ]
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-3.5-turbo',
+    messages,
+    functions: chatGPTFunctions,
+  })
+
+  const message = completion.choices[0]!.message as FunctionCallMessage
+  messages.push(message)
+
+  const args = JSON.parse(message.function_call.arguments!)
+  switch (message.function_call.name) {
+    case 'buy':
+      return ctx.reply(`Betting on ${args['side']}...`).then((textMessage) => {
+        updateMessage(ctx, textMessage, args['side'] === 'BUY' ? 1 : 0)
+      })
+
+    default: {
+      ctx.reply('...')
+    }
+  }
+
+  // If there is a function call, we generate a new message with the role 'function'.
+  // const result = await callFunction(message.function_call)
+  // const newMessage = {
+  //   role: 'function' as const,
+  //   name: message.function_call.name!,
+  //   content: JSON.stringify(result),
+  // }
+
+  // Save it to cache for context in following messages
+  // messages.push(newMessage)
 })
