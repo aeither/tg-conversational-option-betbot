@@ -9,6 +9,8 @@ Orderly Network API is used to get market data such as pair price and last trade
 
 # Demo
 
+https://github.com/aeither/tg-conversational-option-betbot/assets/36173828/f43e1ceb-24cc-42ad-95c9-c52fa3adf7fe
+
 # Features
 
 - bet on price going up or down
@@ -77,6 +79,7 @@ cp .env.example .env.local
 
 and then go to `lib/constants.ts`
 
-## WIP
+## Screenshot
 
-- conversational betting
+![s](https://github.com/aeither/tg-conversational-option-betbot/assets/36173828/c1bd56f4-ca23-47af-baa7-66dabe359956)
+
