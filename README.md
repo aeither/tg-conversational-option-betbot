@@ -1,6 +1,11 @@
-# TG Options Game
+# TG BetBot
+
+Conversational Live Telegram Betting Game Options
 
 # Overview
+
+You can chat with the TG Bot to place quick bets on whether the price will go up or down in the next 15 seconds. It's a simple way to try predicting those tiny price swings. Just message the bot, tell it which way you think the price is headed, and see if you were right after 15 ticks. Quick and easy gambling on them market moves.
+Orderly Network API is used to get market data such as pair price and last trades volume to show to the user the betting status.
 
 # Demo
 

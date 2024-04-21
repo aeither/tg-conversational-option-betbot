@@ -10,6 +10,10 @@ deno run --allow-net --allow-env bot.ts
 https://api.telegram.org/bot<YOUR_BOT_TOKEN>/sendMessage?chat_id=<USER_CHAT_ID>&text=<MESSAGE_TEXT>
 ```
 
+## On Orderly
+
+The documentation cover the usage. I difficult part was lack of examples and how to get the parameters for calling the functions. Also more detailed explanation about what those arguments are used for can be helpful
+
 ## Pending to Template
 
 Return the user message back `ctx.message.text`
